@@ -51,13 +51,15 @@ function getRandomInt(max) {
   return Math.floor(Math.random() * max);
 }
 
+
 playRPS = function(clientGesture) {
-	console.log("************** Playing Roshambo *****************");
+	console.log("************** ROCK-PAPER-SCISSORS **************");
    let gameService = new GameService();
    let gameSummary = gameService.playGame(clientGesture);
-   let theScore = gameService.getScore();
+   let theScore    = gameService.getScore();
+   theScore.increaseRound();
 
-   console.log("Here is the returned gs: " + gameSummary + " :---:");
+   /* console.log("Here is the returned gs: " + gameSummary + " :---:"); */
 
    document.getElementById('results').innerHTML = gameSummary.result;
    document.getElementById('wins').innerHTML = theScore.wins;
@@ -67,13 +69,14 @@ playRPS = function(clientGesture) {
    renderGameHistory(gameService.getGameHistory());
 }
 
+
 renderGameHistory = function(gameHistory){
-	console.log("************** RENDERING GAME HISTORY *****************");
+	/* console.log("************** RENDERING GAME HISTORY *****************"); */
 	let output = "<table class='table table-striped'><tr><th>User</th><th>Computer</th><th>Result</th><th>Date</th></tr>";
 	for (let i=0; i < gameHistory.length; i++){
 		let gameSummary = gameHistory[i];
 		let date = gameSummary.date;
-		console.log(gameSummary);
+		/* console.log(gameSummary); */
     if (gameSummary.result==("win")) {
 			badge = "<span class='badge bg-success'>";
     }
@@ -89,20 +92,21 @@ renderGameHistory = function(gameHistory){
 		output = output + " <td> " + badge + gameSummary.result + "</span>" + " </td> ";
 		output = output + " <td> " + date + " </td> ";
 		output = output + " </tr>";
-		console.log(output);
+		/* console.log(output); */
 	}
 	output = output + "</table>";
 	document.getElementById('history').innerHTML = output;
 }
-
 </script>
+
 
 <script>
 function Score() {
 
-	this.wins=0;
-	this.losses=0;
-	this.ties=0;
+	this.wins   = 0;
+	this.losses = 0;
+	this.ties   = 0;
+  this.round  = 1;
 
 	this.increaseWins = function(){
 		this.wins++;
@@ -110,8 +114,11 @@ function Score() {
 	this.increaseLosses = function(){
 		this.losses++;
 	}
-	 this.increaseTies = function(){
+	this.increaseTies = function(){
 		this.ties++;
+	}
+  this.increaseRound = function(){
+		this.round++;
 	}
 	this.toString = function(){
 		output = "Wins: " + this.wins + " Ties: " + this.ties + " Losses: " + this.losses;
@@ -119,6 +126,7 @@ function Score() {
 	}
 }
 </script>
+
 
 <script>
 function GameSummary(client, server, result) {
@@ -145,15 +153,16 @@ function GameSummary(client, server, result) {
 	}
 
 	this.toString = function() {
-		let output = "Client :: " + this.clientGesture;
+		let output = "User :: " + this.clientGesture;
 		let simpleDate = this.date.toLocaleDateString("en-US");
-		output = output + " :: Server :: " + this.serverGesture;
+		output = output + " :: Computer :: " + this.serverGesture;
 		output = output + " :: Result :: " + this.result;
 		output = output + " :: Time played :: " + simpleDate;
 		return output;
 	}
 }
 </script>
+
 
 <script>
 let theScore = new Score();
@@ -216,24 +225,31 @@ function GameService() {
 
 
 		if (result == "error") { return; }
-		console.log("The is the result: " + result);
+
+    let output = "Round: " + theScore.round;
+    output     = output + " | User: " + userMove;
+    output     = output + " | Computer: " + computerMove;
+    output     = output + " || Result: " + result
+		console.log(output);
 
 		let gameSummary = new GameSummary(userMove, computerMove, result);
+    console.log(theScore.toString());
 		gameHistory.unshift(gameSummary);
 		this.printGameHistory(gameHistory);
 
-		console.log(theScore.toString());
-		console.log("Number of wins: " + theScore.wins);
-		console.log(gameSummary + " :: ");
+
+		/* console.log("Number of wins: " + theScore.wins); */
+		/* console.log(gameSummary + " :: "); */
 		return gameSummary;
 	}
 
+
 	this.printGameHistory = function(gameHistory){
-		console.log("************** GAME HISTORY *****************");
+		console.log("********* GAME HISTORY *********");
 		let aggregate = "";
 		for (let i=0; i < gameHistory.length; i++){
 			let gameSummary = gameHistory[i];
-			console.log(gameSummary);
+			/* console.log(gameSummary); */
 			let output = "Client :: " + gameSummary.clientGesture;
 			output = output + " :: Server :: " + gameSummary.serverGesture;
 			output = output + " :: Result :: " + gameSummary.result;
@@ -242,7 +258,7 @@ function GameService() {
 			aggregate =  aggregate + output + "<br/>";
 		}
 		document.getElementById('history').innerHTML = aggregate;
-		console.log("***********END OF GAME HISTORY *****************");
+		console.log("********* END OF GAME HISTORY *********");
 	}
 }
 

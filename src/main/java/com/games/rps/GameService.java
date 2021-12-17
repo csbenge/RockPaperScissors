@@ -2,7 +2,7 @@ package com.games.rps;
 
 public class GameService {
 
-	public GameSummary playRoshambo(String clientGesture) {
+	public GameSummary playRPS(String clientGesture) {
 
 		String result = "error";
 		if (clientGesture.equals("scissors")) {

@@ -47,6 +47,9 @@
 </html>
 
 <script>
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max);
+}
 
 playRPS = function(clientGesture) {
 	console.log("************** Playing Roshambo *****************");
@@ -165,29 +168,57 @@ function GameService() {
 		return gameHistory;
 	}
 
-	this.playGame = function(input) {
+	this.playGame = function(userMove) {
+
+    let options = ['rock', 'paper', 'scissors']
+    let computer = getRandomInt(3);
+    let computerMove = options[computer];
 
 		let result = "error";
 
-		if (input==("scissors")) {
-			result = "lose";
-			theScore.increaseLosses();
-		}
+    /* tie */
+    if (userMove==computerMove) {
+      result = "tie";
+      theScore.increaseTies();
+    }
 
-		if (input==("paper")) {
+    /* user wins */
+		if (userMove==("scissors") && computerMove==("paper")) {
 			result = "win";
 			theScore.increaseWins();
 		}
 
-		if (input==("rock")) {
-			result = "tie";
-			theScore.increaseTies();
+		if (userMove==("paper") && computerMove==("rock")) {
+			result = "win";
+			theScore.increaseWins();
 		}
+
+    if (userMove==("rock") && computerMove==("scissors")) {
+			result = "win";
+			theScore.increaseWins();
+		}
+
+    /* computer wins */
+    if (userMove==("rock") && computerMove==("paper")) {
+			result = "lose";
+			theScore.increaseLosses();
+		}
+
+    if (userMove==("scissors") && computerMove==("rock")) {
+			result = "lose";
+			theScore.increaseLosses();
+		}
+
+    if (userMove==("paper") && computerMove==("scissors")) {
+			result = "lose";
+			theScore.increaseLosses();
+		}
+
 
 		if (result == "error") { return; }
 		console.log("The is the result: " + result);
 
-		let gameSummary = new GameSummary(input, "rock", result);
+		let gameSummary = new GameSummary(userMove, computerMove, result);
 		gameHistory.unshift(gameSummary);
 		this.printGameHistory(gameHistory);
 
@@ -215,38 +246,4 @@ function GameService() {
 	}
 }
 
-</script>
-
-<script>
-
-/*
-
-let gs = new GameService();
-gs.playGame("paper");
-
-var gameHistory =[];
-
-
-{
-let gameSummary = new GameSummary("rock","rock","tie");
-gameHistory.unshift(gameSummary);
-}
-{
-let gameSummary = new GameSummary("paper","rock","loss");
-gameHistory.unshift(gameSummary);
-}
-{
-let gameSummary = new GameSummary("scissors","paper","win");
-gameHistory.unshift(gameSummary);
-}
-console.log(gameHistory);
-
-var score = new Score();
-score.increaseWins();
-score.increaseWins();
-score.increaseTies();
-score.increaseLosses();
-console.log(score.wins);
-console.log(score.toString());
-*/
 </script>

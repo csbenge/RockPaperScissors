@@ -34,9 +34,9 @@ public class GameSummary {
 	}
 	@Override
 	public String toString() {
-		return "GameSummary [clientGesture=" + clientGesture
-				+ ", serverGesture=" + serverGesture + ", result=" + result
-				+ ", date=" + date + "]";
+		return "** GameSummary: userMove=" + clientGesture
+				+ ", computerMove=" + serverGesture + ", result=" + result
+				+ ", date=" + date;
 	}
 
 }

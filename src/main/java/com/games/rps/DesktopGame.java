@@ -1,42 +1,70 @@
 package com.games.rps;
 
 import javax.swing.JOptionPane;
+import java.util.Random;
 
 public class DesktopGame {
-	public enum Gesture {rock,paper,scissors};
+	public static String[] options =  {"rock", "paper", "scissors"};
 
 	public static void main(String[] args) {
 
 		String prompt = "Will it be rock, paper or scissors?";
-		Score score = new Score();
+		Score score   = new Score();
 		java.util.Vector<GameSummary> history = new java.util.Vector<GameSummary>();
+		Random random = new Random();
 
 		while (true) {
 			String result = "error";
-			String input = JOptionPane.showInputDialog(prompt);
-			if (input.equals(Gesture.scissors.toString())) {
-				result = "lose";
-				score.increaseLosses();
-			}
-			if (input.equals(Gesture.paper.toString())) {
-				result = "win";
-				score.increaseWins();
-			}
-			if (input.equals(Gesture.rock.toString())) {
+			String userMove = JOptionPane.showInputDialog(prompt);
+			int r = random.nextInt(2 - 0 + 1) + 0;
+			String computerMove = options[r];
+
+			/* tie */
+			if (userMove.equals(computerMove)) {
 				result = "tie";
 				score.increaseTies();
 			}
-			if (input.equalsIgnoreCase("quit")) {
-				break;
+
+			/* user wins */
+			if (userMove.equals("scissors") && computerMove.equals("paper")) {
+				result = "win";
+				score.increaseWins();
 			}
-			GameSummary gs = new GameSummary(input, "rock", result);
+
+			if (userMove.equals("paper") && computerMove.equals("rock")) {
+				result = "win";
+				score.increaseWins();
+			}
+
+	    if (userMove.equals("rock") && computerMove.equals("scissors")) {
+				result = "win";
+				score.increaseWins();
+			}
+
+	    /* computer wins */
+	    if (userMove.equals("rock") && computerMove.equals("paper")) {
+				result = "lose";
+				score.increaseLosses();
+			}
+
+	    if (userMove.equals("scissors") && computerMove.equals("rock")) {
+				result = "lose";
+				score.increaseLosses();
+			}
+
+	    if (userMove.equals("paper") && computerMove.equals("scissors")) {
+				result = "lose";
+				score.increaseLosses();
+			}
+
+			GameSummary gs = new GameSummary(userMove, computerMove, result);
 			history.add(gs);
 
-			JOptionPane.showMessageDialog(null, result);
-			System.out.println(score);
 			for (GameSummary gameSummary : history) {
 				System.out.println(gameSummary);
 			}
+			System.out.println(score);
+			JOptionPane.showMessageDialog(null, result);
 
 		}
 	}

@@ -15,7 +15,7 @@ public class Score {
 	}
 
 	public String toString(){
-		String output = "Wins: " + wins + " Ties: " + ties + " Losses: " + losses;
+		String output = "** Wins: " + wins + " Ties: " + ties + " Losses: " + losses;
 		return output;
 	}
 

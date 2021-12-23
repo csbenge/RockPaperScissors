@@ -7,7 +7,8 @@
 <html>
    <body>
      <div class="container">
-       <h1>Choose your move.</hr><br/>
+       <h1>Rock, Paper, Scissors...</h1>
+       <h2>Choose your move.</h2><br/>
        <div class="btn-group" role="group" aria-label="Basic mixed styles example">
         <button type="button" class="btn btn-danger"  onclick="playRPS('rock')">Rock</button>
         <button type="button" class="btn btn-warning" onclick="playRPS('paper')">Paper</button>
@@ -250,10 +251,10 @@ function GameService() {
 		for (let i=0; i < gameHistory.length; i++){
 			let gameSummary = gameHistory[i];
 			/* console.log(gameSummary); */
-			let output = "Client :: " + gameSummary.clientGesture;
-			output = output + " :: Server :: " + gameSummary.serverGesture;
-			output = output + " :: Result :: " + gameSummary.result;
-			output = output + " :: Time played :: " + gameSummary.date;
+			let output = "User: " + gameSummary.clientGesture;
+			output = output + " | Computer: " + gameSummary.serverGesture;
+			output = output + " | Result: " + gameSummary.result;
+			output = output + " | Time played: " + gameSummary.date;
 			console.log(output);
 			aggregate =  aggregate + output + "<br/>";
 		}
